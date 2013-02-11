@@ -9,7 +9,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 
 from django.test import TestCase
-from cs169.cs169proj1.models import *
+from cs169proj1.models import *
 #from django.core import management
 #import cs169.mysite.settings as settings; 
 #management.setup_environ(settings)
