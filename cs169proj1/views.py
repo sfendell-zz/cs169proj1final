@@ -1,5 +1,5 @@
 # Create your views here.
-import json, traceback, tempfile, os, re
+import json, traceback, tempfile, os
 from django.http import HttpResponse
 from models import UsersModel, SUCCESS, ERR_BAD_CREDENTIALS, ERR_USER_EXISTS, ERR_BAD_USERNAME, ERR_BAD_PASSWORD
 from django.views.decorators.csrf import csrf_exempt                                          
