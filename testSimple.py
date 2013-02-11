@@ -24,6 +24,5 @@ class TestUnit(testLib.RestTestCase):
         self.assertEquals(0, respData['nrFailed'])
 
 
-
     
     

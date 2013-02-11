@@ -6,10 +6,13 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def login(request):
-    print 'GOT TO HERE'
     if request.method == 'POST':
-        request_data = request.POST
-        responseInt = UsersModel.login(**request_data)
+        request_data = json.loads(request.POST.keys()[0])
+        try:
+            responseInt = UsersModel.login(**request_data)
+        except:
+            print traceback.format_exc()
+            raise
         if responseInt == ERR_BAD_CREDENTIALS:
             response_data = {'errCode' : ERR_BAD_CREDENTIALS}
         elif responseInt > 0:
