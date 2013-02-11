@@ -65,4 +65,26 @@ class Test(TestCase):
         UsersModel.add('user','password')
         numLogins = 10
         for login in range(1, numLogins):
-            self.assertEquals(UsersModel.login('user', 'password'), login)
+            self.assertEquals(UsersModel.login('user', 'password'), login+1)
+            
+    def testLoginBadPassword(self):
+        UsersModel.add('user','password')
+        self.assertEqual(UsersModel.login('user','not_password'), ERR_BAD_CREDENTIALS)
+        
+    def testLoginBadUsername(self):
+        UsersModel.add('user2','password')
+        self.assertEquals(UsersModel.login('user', 'password'), ERR_BAD_CREDENTIALS)
+        
+    def testLoginMultipleTimesSingleUser(self):
+        UsersModel.add('user','password')
+        loginTimes = 10
+        for x in range(2,loginTimes):
+            self.assertEqual(UsersModel.login('user','password'), x)
+    
+    def testLoginMultipleTimesMultipleUser(self):
+        UsersModel.add('user','password')
+        UsersModel.add('user2','password')
+        loginTimes = 20
+        for x in range(2, loginTimes):
+            self.assertEqual(UsersModel.login('user','password'), x)
+            self.assertEqual(UsersModel.login('user2','password'), x)

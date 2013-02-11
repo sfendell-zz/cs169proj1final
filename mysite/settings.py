@@ -2,11 +2,11 @@
 
 import sys
 
-#DEBUG = True
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
+          ('Samuel Fendell', 'sfendell91@gmail.com')
     # ('Your Name', 'your_email@example.com'),
 )
 
@@ -106,6 +106,7 @@ ROOT_URLCONF = 'mysite.urls'
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 TEMPLATE_DIRS = (
+    '/Users/samuelfendell/Desktop/django_test/cs169/cs169proj1/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -148,4 +149,4 @@ LOGGING = {
 }
 
 import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
+#DATABASES['default'] =  dj_database_url.config()
