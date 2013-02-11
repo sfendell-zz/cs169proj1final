@@ -7,10 +7,8 @@ bdist-mpkg==0.4.4
 bpython==0.12
 dj-database-url==0.2.1
 macholib==1.4.2
-matplotlib==1.2.0
 mechanize==0.2.5
 modulegraph==0.9.1
-numpy==1.6.1
 psycopg2==2.4.6
 py2app==0.6.3
 pyOpenSSL==0.13
@@ -51,7 +49,6 @@ pyobjc-framework-SystemConfiguration==2.3.2a0
 pyobjc-framework-WebKit==2.3.2a0
 pyobjc-framework-XgridFoundation==2.3.2a0
 python-dateutil==1.5
-scipy==0.11.0
 virtualenv==1.8.4
 wsgiref==0.1.2
 xattr==0.6.2
