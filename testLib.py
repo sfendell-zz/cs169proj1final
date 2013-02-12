@@ -7,7 +7,6 @@ import httplib
 import sys
 import os
 import json
-import traceback
 
 class RestTestCase(unittest.TestCase):
     """
