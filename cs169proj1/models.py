@@ -46,7 +46,11 @@ class UsersModel(models.Model):
                 return newUser.count
         except:
             print traceback.format_exc()
-            
+    
+    @classmethod
+    def reset(cls):
+        return cls.TESTAPI_resetFixture()        
+    
     @classmethod
     def TESTAPI_resetFixture(cls):
         UsersModel.objects.all().delete()

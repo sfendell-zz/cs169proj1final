@@ -1,5 +1,5 @@
 # Create your views here.
-import json, traceback, tempfile, os
+import json, traceback, tempfile, os, re
 from django.http import HttpResponse
 from models import UsersModel, SUCCESS, ERR_BAD_CREDENTIALS, ERR_USER_EXISTS, ERR_BAD_USERNAME, ERR_BAD_PASSWORD
 from django.views.decorators.csrf import csrf_exempt                                          
@@ -51,25 +51,55 @@ def resetFixture(request):
 
 @csrf_exempt
 def unitTests(request):
-    thisDir = os.path.dirname(os.path.abspath(__file__))
-    (ofile, ofileName) = tempfile.mkstemp(prefix='unittestout')
-    cmd = "python " + os.path.join(thisDir, '../manage.py') + ' test &> ' + ofileName 
-    print "Executing " + cmd
+    (_, ofileName) = tempfile.mkstemp(prefix="userCounter")
     try:
-        code = os.system(cmd)
-        if code!=0:
-            raise Exception("Something went wrong running the tests! The cmd %s did not work." % cmd)    
-        with open(ofileName,'r') as ofile:
-            firstLine = ofile.readline().strip()
-        with open(ofileName,'r') as ofile:
-            testout = ofile.read()
-        total = len(firstLine)
-        failures = total - firstLine.count('.')
-        respDict = { 'totalTests' : total,
-                     'nrFailed'   : failures,
-                     'output'     : testout}
-        response = HttpResponse(json.dumps(respDict), content_type = "application/json")
+        errMsg = ""     # We accumulate here error messages
+        output = ""     # Some default values
+        totalTests = 0
+        nrFailed   = 0
+        while True:  # Give us a way to break
+            # Find the path to the server installation
+            os.system("cd ../")
+            cmd = "make unit_tests > "+ofileName+" 2>&1"
+            print "Executing "+cmd
+            code = os.system(cmd)
+            if code != 0:
+                # There was some error running the tests.
+                # This happens even if we just have some failing tests
+                errMsg = "Error running command (code="+str(code)+"): "+cmd+"\n"
+                # Continue to get the output, and to parse it
+                
+            # Now get the output
+            try:
+                ofileFile = open(ofileName, "r")
+                output = ofileFile.read()
+                ofileFile.close ()
+            except:
+                errMsg += "Error reading the output "+traceback.format_exc()
+                # No point in continuing
+                break
+            
+            print "Got "+output
+            # Python unittest prints a line like the following line at the end
+            # Ran 4 tests in 0.001s
+            m = re.search(r'Ran (\d+) tests', output)
+            if not m:
+                errMsg += "Cannot extract the number of tests\n"
+                break
+            totalTests = int(m.group(1))
+            # If there are failures, we will see a line like the following
+            # FAILED (failures=1)
+            m = re.search('rFAILED.*\(failures=(\d+)\)', output)
+            if m:
+                nrFailed = int(m.group(1))
+            break # Exit while
+
+        # End while
+        resp = { 'output' : errMsg + output,
+                 'totalTests' : totalTests,
+                 'nrFailed' : nrFailed }
+        response = HttpResponse(json.dumps(resp), content_type = "application/json")
         return response
-    except:
-        print traceback.format_exc()
-        raise
+    finally:
+        os.unlink(ofileName)
+        

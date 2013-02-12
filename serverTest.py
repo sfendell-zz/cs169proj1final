@@ -3,7 +3,7 @@ Unit tests for the cs169proj1.models.py module.
 This is just a sample. You should have more tests for your model (at least 10)
 """
 
-import unittest, os
+import unittest, os, sys
 os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
 import cs169proj1.models
 
@@ -12,7 +12,7 @@ class TestUsers(unittest.TestCase):
     Unittests for the Users model class (a sample, incomplete)
     """
     def setUp(self):
-        self.users = cs169proj1.models.UsersModel ()
+        self.users = cs169proj1.models.UsersModel
         self.users.reset ()
 
         
@@ -80,4 +80,7 @@ class TestUsers(unittest.TestCase):
         self.users.add('user2','password')
         self.assertEquals(self.users.login('user', 'password'), cs169proj1.models.ERR_BAD_CREDENTIALS)
 
-
+if __name__ == "__main__":
+    # Add a verbose argument
+    sys.argv = [sys.argv[0]] + ["-v"] + sys.argv[1:]
+    unittest.main()
