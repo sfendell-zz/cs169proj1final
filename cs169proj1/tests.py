@@ -4,10 +4,15 @@ when you run "manage.py test".
 
 Replace this with more appropriate tests for your application.
 """
+import os
+#os.environ['DJANGO_SETTINGS_MODULE'] = 'cs169.mysite.settings'
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
 
 from django.test import TestCase
 from models import *
-import os
+#from django.core import management
+#import cs169.mysite.settings as settings; 
+#management.setup_environ(settings)
 base_dir = os.path.dirname(__file__)
 
 
