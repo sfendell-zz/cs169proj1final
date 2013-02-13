@@ -18,6 +18,7 @@ all_tests :: unit_tests
 .PHONY: func_tests
 func_tests:
 	@echo "\n======= Running functional tests ======\n"
+	@echo $(TESTARGS)
 	python -m unittest discover -v $(TESTARGS)
 
 all_tests :: func_tests
