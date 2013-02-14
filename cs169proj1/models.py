@@ -33,7 +33,7 @@ class UsersModel(models.Model):
     @classmethod
     def add(cls, user, password):
         try:
-            if not user or user > MAX_USERNAME_LENGTH:
+            if not user or len(user) > MAX_USERNAME_LENGTH:
                 return ERR_BAD_USERNAME
             if len(password) > MAX_PASSWORD_LENGTH:
                 return ERR_BAD_PASSWORD

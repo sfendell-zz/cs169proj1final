@@ -55,9 +55,16 @@ class TestLoginUser(TestUser):
         '''
         Tests that a single login with a bad username doesn't work.
         '''
-        self.makeRequest("/users/add/", method="POST", data = { 'user' : 'user1', 'password' : 'password'} )
+        self.makeRequest("/users/add", method="POST", data = { 'user' : 'user1', 'password' : 'password'} )
         respData = self.makeRequest("/users/login/", method="POST", data = { 'user' : 'notuser', 'password' : 'password'} )
         self.assertResponse(respData, count=None, errCode=testLib.RestTestCase.ERR_BAD_CREDENTIALS)
+
+    def testLongUsername(self):
+        user = 'ab' * 128
+        addRespData = self.makeRequest("/users/add", method="POST", data = {'user' : user, 'password' : 'password'})
+        self.assertResponse(addRespData, count=None, errCode = testLib.RestTestCase.ERR_BAD_USERNAME)
+        loginRespData = self.makeRequest("/users/login", method="POST", data = {'user' : user, 'password' : 'password'})
+        self.assertResponse(loginRespData, count=None, errCode = testLib.RestTestCase.ERR_BAD_CREDENTIALS)
 
     def testBadAndGoodLogin(self):
         '''

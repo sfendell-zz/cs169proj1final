@@ -79,6 +79,12 @@ class TestUsers(unittest.TestCase):
     def testLoginBadUsername(self):
         self.users.add('user2','password')
         self.assertEquals(self.users.login('user', 'password'), cs169proj1.models.ERR_BAD_CREDENTIALS)
+        
+    def testAddLongUsername(self):
+        user = 'user' * cs169proj1.models.MAX_USERNAME_LENGTH
+        self.assertEquals(self.users.add(user, 'password'), cs169proj1.models.ERR_BAD_USERNAME)
+        self.assertEquals(self.users.login(user, 'password'), cs169proj1.models.ERR_BAD_CREDENTIALS)
+        
 
 if __name__ == "__main__":
     # Add a verbose argument
