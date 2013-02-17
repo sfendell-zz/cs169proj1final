@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'^users/add', 'cs169proj1.views.add'),
     url(r'^TESTAPI/resetFixture', 'cs169proj1.views.resetFixture'),
     url(r'^TESTAPI/unitTests', 'cs169proj1.views.unitTests'),
-    url(r'^', 'cs169proj1.views.users'),
+    url(r'^$', 'cs169proj1.views.users'),
     url(r'^client.js', 'cs169proj1.views.clientjs'),
     url(r'^client.css','cs169proj1.views.clientcss'),
     # Examples:

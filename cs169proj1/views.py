@@ -108,23 +108,17 @@ def unitTests(request):
 from django.template.loader import get_template
 from django.template import Context
 
-'''
+
 
 def users(request):
-    print 'got sent to views!'
-    try:
-        print 'getting template'
-        t = get_template('users.html')
-        print 'got template'
-        html = t.render(Context(None))
-        print 'rendered template'
-        resp = HttpResponse(html)
-        print 'made httpresponse'
-        print resp
-        return resp
-    except Exception as e:
-        print e
-        traceback.format_exc()
+
+    t = get_template('users.html')
+    print 'got template'
+    html = t.render(Context(None))
+    print 'rendered template'
+    resp = HttpResponse(html)
+    print 'made httpresponse'
+    return resp
 
 def clientcss(request):
     t = get_template('client.css')
@@ -149,3 +143,4 @@ def clientcss(request):
 
 def clientjs(request):
     return _template('client.js')
+'''
