@@ -39,6 +39,8 @@ def add(request):
                 print responseInt, ' was the response int'
                 raise Exception('Bad response from server!')
             return HttpResponse(json.dumps(response_data), content_type = "application/json")
+        elif request.method == 'GET':
+            return 'asdf'
         else:
             raise Exception('Request must be a post!')
     except:
@@ -102,4 +104,48 @@ def unitTests(request):
         return response
     finally:
         os.unlink(ofileName)
-        
+
+from django.template.loader import get_template
+from django.template import Context
+
+'''
+
+def users(request):
+    print 'got sent to views!'
+    try:
+        print 'getting template'
+        t = get_template('users.html')
+        print 'got template'
+        html = t.render(Context(None))
+        print 'rendered template'
+        resp = HttpResponse(html)
+        print 'made httpresponse'
+        print resp
+        return resp
+    except Exception as e:
+        print e
+        traceback.format_exc()
+
+def clientcss(request):
+    t = get_template('client.css')
+    html = t.render(Context(None))
+    resp = HttpResponse(html)
+    return resp
+
+def clientjs(request):
+    t = get_template('client.js')
+    html = t.render(Context(None))
+    resp = HttpResponse(html)
+    return resp
+'''
+def _template(template_page):
+    return HttpResponse(get_template(template_page).render(Context(None)))
+
+def users(request):
+    return _template('users.html')
+
+def clientcss(request):
+    return _template('client.css')
+
+def clientjs(request):
+    return _template('client.js')
