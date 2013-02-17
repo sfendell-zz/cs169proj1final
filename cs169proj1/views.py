@@ -109,7 +109,7 @@ from django.template.loader import get_template
 from django.template import Context
 
 
-
+'''
 def users(request):
 
     t = get_template('users.html')
@@ -143,4 +143,3 @@ def clientcss(request):
 
 def clientjs(request):
     return _template('client.js')
-'''
