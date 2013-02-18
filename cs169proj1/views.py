@@ -136,10 +136,17 @@ def _template(template_page):
     return HttpResponse(get_template(template_page).render(Context(None)))
 
 def users(request):
-    return _template('users.html')
+    a = _template('users.html')
+    print a
+    return a
 
 def clientcss(request):
-    return _template('client.css')
+    print 'getting the client css'
+    try:
+        return HttpResponse(get_template('client.css'))
+    except Exception as e:
+        print e
+        print traceback.format_exc()
 
 def clientjs(request):
     return _template('client.js')
