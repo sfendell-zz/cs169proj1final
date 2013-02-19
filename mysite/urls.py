@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^$', 'cs169proj1.views.users'),
     url(r'^client.js', 'cs169proj1.views.clientjs'),
     url(r'^client.css','cs169proj1.views.clientcss'),
+    url(r'^login.css', 'cs169proj1.views.logincss'),
     # Examples:
     # url(r'^$', 'mysite.views.home', name='home'),
     # url(r'^mysite/', include('mysite.foo.urls')),

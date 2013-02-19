@@ -5,32 +5,28 @@
 <link rel="stylesheet" type="text/css" href="login.css">
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+<!-- This is all the page independent functions.  The ones which directly interact with the page are inlined below. -->
 </head>
 
-<center>
 <div id="login-page" class="box">
   <div id="login-message" class="message"></div>
-  <center>
     <form>
-      Username: <input id="username" type="text" name="username"><br>
-      Password: <input id="password" type="password" name="pwd"><br>
+      Username: <input id="login-username" type="text" name="username"><br>
+      Password: <input id="login-password" type="password" name="pwd"><br>
       <input id="login-button" type="submit" value="Login">
       <input id="add-button" type="submit" value="Add User">
     </form>
-  </center>
 </div>
 
 <div id="welcome-page" class="box">
   <div id="welcome-message" class="message"></div>
-  <center>
     <form>
       <input type="submit" id="logout-button" value="Logout">
     </form>
-  </center>
 </div>
-</center>
 
 <script type="text/javascript">
+
 
 
 ERR_BAD_CREDENTIALS = (-1);
@@ -39,92 +35,125 @@ ERR_BAD_USERNAME = (-3);
 ERR_BAD_PASSWORD = (-4);
 
 
-function err_to_message(code) {
-    if( code == ERR_BAD_CREDENTIALS) {
-        return ("Bad username or password. Try again.");
-    } 
-    
-    if(code == ERR_BAD_PASSWORD){
-    	return ("Password should be less than 128 characters! it can be empty!");
-    }
-    
-    if( code == ERR_USER_EXISTS) {
-        return ("Username taken. Is it yours? We have no way of recovering your password, so just make another account.");
- 
-    }
-    if(code == ERR_BAD)
-    
-    if( code == ERR_BAD_USERNAME) {
-        return ("The username should be nonempty and less than 128 characters. Try again please.");
-   } else {
-        alert("THIS SHOULDNT HAPPEN EVER! Got a bad error code");
-        /*this shouldn't happen*/
-   }
+function handle_response(data, user, allowed_err_codes){
+	if( data.errCode > 0 ) {
+     c = data.count;
+     show_loggedin_page(user, c);
+  } else {
+        if( allowed_err_codes.indexOf(data.errCode) == -1  ) {
+           alert( 'Illegal error code encounted for this state');
+        }
+     show_front_page( err_to_message(data.errCode) );  
+  }
+}
+
+function handle_login_response(data, user) {
+	return handle_response(data, user, [ERR_BAD_CREDENTIALS])
+
+}
+
+function handle_add_user_response(data, user) {
+	return handle_response(data, user, [ERR_BAD_USERNAME, ERR_USER_EXISTS, ERR_BAD_PASSWORD]);
 }
 
 
+function err_to_message(code) {
+    
+    
+    if( code == ERR_USER_EXISTS) {
+        return ("That username is taken! Make another!");
+       }
+    
+    if( code == ERR_BAD_USERNAME) {
+        return ("The user name should not be empty and it should be less than 128 characters. Fix this immediately.");
+    }
+    
+    if( code == ERR_BAD_CREDENTIALS) {
+        return ("Either your password or username was wrong. Try again bro.");
+    }
+    
+    
+    if (code == ERR_BAD_PASSWORD){
+    	return ("YOur password is too long. It should be less than 128 characters. You can't even remember a password that long! what's wrong with you!");
+    }
+    
+        return ("Unknown error occured: " + code);
+}
+function blank_fields(){
+	$('#login-username').val("")
+	$('#login-password').val("")
+	return false;
+}
 
+
+/*Start by blanking the page.*/
 $('#login-page').hide()
 $('#welcome-page').hide()
-$('#username').val("")
-$('#password').val("")
-$('#login-message').html("Please enter your credentials below")
+blank_fields();
+$('#login-message').html("Login to the app below")
+$('#welcome-message').html("'placeholder text");
 
-/* When the document is ready, we show the front page!*/
 $(document).ready(function() {
-   show_front_page();
+   show_front_page("Please enter your credentials below");
  });
 
-/* We basically have two pages that we alternatively show and hide.*/
+
 function show_front_page(message) {
-  if(! message) message = "Please login or make a new account!";
   $('#welcome-page').hide()
-  $('#username').val("")
-  $('#password').val("")
+  blank_fields;
   $('#login-message').html(message)
   $('#login-page').show()
 }
 
-function logged_in_page(user, count) {
+function show_loggedin_page(user, count) {
    $('#login-page').hide();
    $('#welcome-page').show();
    $('#welcome-message').html("Welcome "+user+"<br>You have logged in "+count+" times.");
 }
 
-function handle_login_response(data, user) {
-  if( data.errCode > 0 ) {
-     c = data.count;
-     show_welcome_page(user, c);
-  } else {
-     show_front_page( err_to_message(data.errCode) );  
-  }
+
+
+
+
+
+function buttonclick(action){
+	
+	function json_request(page, dict, success, failure) {
+    $.ajax({
+        type: 'POST',
+        url: page,
+        data: JSON.stringify(dict),
+        contentType: "application/json",
+        dataType: "json",
+        success: success,
+        failure: failure
+    });
+}
+	
+	
+	function _buttonclick(){
+	   username = $('#login-username').val()
+	   password = $('#login-password').val()
+	   json_request("/users/" + action, { user: username, password: password }, function(data) { 
+	   	if (action=='add'){
+	   	return handle_add_user_response(data, username); 	
+	   	}
+	   	else if(action == 'login'){
+	   		return handle_login_response(data, username);
+	   	}
+	   	else{
+	   		alert('disallowed action take!');
+	   	}
+	   }
+	   	, function(err) {alert('error occurred on request'); });
+	
+	   return false;
+	}
+	return _buttonclick;
 }
 
-function handle_add_user_response(data, user) {
-  if( data.errCode > 0 ) {
-     c = data.count;
-     show_welcome_page(user, c);
-  } else {
-
-     show_front_page( err_to_message(data.errCode) );  
-  }
-}
-
-$('#login-button').click(function() {
-   username = $('#username').val()
-   password = $('#password').val()
-   json_request("/users/login", { user: username, password: password }, function(data) { return handle_login_response(data, username); }, function(err) { alert('This shouldnt happen!'); });
-
-   return false;
-});
-
-$('#add-button').click(function() {
-   username = $('#username').val()
-   password = $('#password').val()
-   json_request("/users/add", { user: username, password: password }, function(data) { return handle_add_user_response(data, username); }, function(err) {alert('Something craaazzyyy happened! so crazy'); });
-
-   return false;
-});
+$('#add-button').click(buttonclick('add'));
+$('#login-button').click(buttonclick('login'));
 
 $('#logout-button').click(function() {
   show_front_page();

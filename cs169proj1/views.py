@@ -138,6 +138,9 @@ def _template(template_page):
 def users(request):
     return _template('users2.html')
 
+def logincss(request):
+    return HttpResponse(get_template('login.css').render(Context(None)), content_type= 'text/css')
+
 def clientcss(request):
     
     print 'getting the client css'
