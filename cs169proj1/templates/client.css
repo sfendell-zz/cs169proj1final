@@ -10,13 +10,13 @@
 
 .message {
 	color: green;
-	font-weight: 87;
+	font-weight: 870;
     margin: 10px 20px 10px 20px;
     border: thin black solid;
 }
 
 body {
-	background-color: rgb(123,43,76);
+	background-color: rgb(255,192,203);
 	font-family: "Comic Sans MS", cursive, sans-serif;
 /*	font-family: 'Helvetica Neue Light', HelveticaNeue-Light, 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 }
