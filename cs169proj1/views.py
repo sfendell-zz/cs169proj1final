@@ -136,7 +136,7 @@ def _template(template_page):
     return HttpResponse(get_template(template_page).render(Context(None)))
 
 def users(request):
-    return _template('users.html')
+    return _template('users2.html')
 
 def clientcss(request):
     
