@@ -58,7 +58,7 @@ function handle_add_user_response(data, user) {
 
 
 function err_to_message(code) {
-    
+    blank_fields();
     
     if( code == ERR_USER_EXISTS) {
         return ("That username is taken! Make another!");
@@ -83,6 +83,7 @@ function blank_fields(){
 	$('#login-username').val("")
 	$('#login-password').val("")
 	return false;
+	
 }
 
 
