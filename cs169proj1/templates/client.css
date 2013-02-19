@@ -9,11 +9,14 @@
 }
 
 .message {
+	color: green;
+	font-weight: 87;
     margin: 10px 20px 10px 20px;
     border: thin black solid;
 }
 
 body {
+	background-color: rgb(123,123,76);
 	font-family: 'Comic Sans', Comic-Sans;
 /*	font-family: 'Helvetica Neue Light', HelveticaNeue-Light, 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 }
