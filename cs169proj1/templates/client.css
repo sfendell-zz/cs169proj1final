@@ -4,8 +4,8 @@
 .box {
     width: 300px;
     height: 200px;
-    border: thin black solid;
-    background-color: rgb(203,255,192);
+    border: pink solid;
+    background-color: rgb(255,192,203);
 }
 
 .message {
@@ -16,7 +16,7 @@
 }
 
 body {
-	background-color: rgb(255,192,203);
+	background-color: rgb(255,255,0);
 	font-family: "Comic Sans MS", cursive, sans-serif;
 /*	font-family: 'Helvetica Neue Light', HelveticaNeue-Light, 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 }
