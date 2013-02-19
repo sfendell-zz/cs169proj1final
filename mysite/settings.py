@@ -78,7 +78,9 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-'/Users/samuelfendell/Desktop/django_test/cs169/cs169proj1/static',
+                    #TODO finish
+                    
+os.path.join(os.path.abspath(os.path.dirname(__file__)),'../cs169proj1/templates'),
 
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
